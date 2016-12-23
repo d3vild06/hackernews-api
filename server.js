@@ -45,6 +45,19 @@ app.post('/stories', (req, res) => {
   });
 });
 
+app.put('/stories/:id', (req, res) => {
+  const paramId = req.params.id;
+  const bodyReqId = req.body.id;
+  // if (paramId !== bodyReqId) {
+  //   console.log('ids do not match!');
+  //   return res.status(400).json({message: 'Invalid Request: Ids in request and url must match'});
+  // }
+  Story.findByIdAndUpdate(paramId, { $inc: { votes: 1 } })
+    .exec()
+    .then(function(story) { res.status(204).end()})
+    .catch(err => { res.status(500).json({message: err.message}) });
+});
+
 
 
 let server;
